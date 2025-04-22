@@ -1,0 +1,31 @@
+==================================================INFO==================================================
+This is a basic programme which:
+1. Get CPU INFO
+2. Get GPU INFO
+3. Get RAM INFO
+4. Get SSD|HDD INFO
+
+Note:
+You need to install python 3.13 or above!
+You need to install all pips.
+Reqire cpuinfo, to install open powershell\cmd and type "pip install cpuinfo"
+
+NOTE:
+If this is a opensource code, run smoothly and print a url, when go, it show you the live InFO
+
+A basic progect from python for those who are of low-level
+
+You may install VS-code or other texteditor to run it.
+
+
+IMPINFO:
+No warrenty
+Read linces and README.md before install it
+
+
+Thanks for TRUST and installing
+
+We shall upload other programmes
+
+
+==================================================THANKS==================================================

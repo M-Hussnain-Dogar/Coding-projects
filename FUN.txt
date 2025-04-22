@@ -1,0 +1,18 @@
+==================================================INFO==================================================
+This programme is for a basic number_guessing
+There ARE two files:
+1.FUN.c
+2.FUN.exe ==>In binary, binary of FUN.c
+
+FUN.exe may not show the last input\output so use FUN.c
+So you can run code in a text editor.
+
+
+HOW this mini-small-game-progect work:
+You only reach to know when run application
+
+
+It is not a main part of a INFO-viewer
+
+It is just for fun.
+==================================================THANKS==================================================
