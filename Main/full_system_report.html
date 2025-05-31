@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>System Report Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f6f9;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #4a90e2;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 24px;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 20px auto;
+      padding: 20px;
+    }
+    .section {
+      background: white;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .section h2 {
+      color: #4a90e2;
+      margin-top: 0;
+    }
+    .key-value {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #eee;
+    }
+    .key-value:last-child {
+      border-bottom: none;
+    }
+    .key {
+      font-weight: bold;
+    }
+    .core-usage {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .core-bar {
+      background: #e0e0e0;
+      width: 100%;
+      height: 20px;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      background: #4caf50;
+      transition: width 0.5s ease-in-out;
+    }
+  </style>
+</head>
+<body>
+  <header>💻 Real-Time System Report</header>
+  <div class="container">
+    <div class="section" id="system_info">
+      <h2>System Info</h2>
+    </div>
+
+    <div class="section" id="memory_info">
+      <h2>Memory Info</h2>
+    </div>
+
+    <div class="section" id="disk_info">
+      <h2>Disk Info</h2>
+    </div>
+
+    <div class="section" id="cpu_cores">
+      <h2>CPU Usage Per Core</h2>
+      <div class="core-usage" id="core_usage"></div>
+    </div>
+
+    <div class="section">
+      <h2>GPU Info</h2>
+      <p id="gpu_info">Loading...</p>
+    </div>
+
+    <div class="section">
+      <h2>CPU Temperature</h2>
+      <p id="cpu_temp">Loading...</p>
+    </div>
+  </div>
+
+  <script>
+    async function fetchData() {
+      try {
+        const res = await fetch('system_data.json');
+        const data = await res.json();
+
+        const systemInfo = data.system_info;
+        const memoryInfo = data.memory_info;
+        const diskInfo = data.disk_info;
+        const coreUsage = data.cpu_usage_per_core;
+        const gpuInfo = data.gpu_info;
+        const cpuTemp = data.cpu_temp;
+
+        const formatSection = (id, obj) => {
+          const el = document.getElementById(id);
+          el.innerHTML = '<h2>' + el.querySelector('h2').textContent + '</h2>';
+          for (let key in obj) {
+            el.innerHTML += `
+              <div class="key-value">
+                <div class="key">${key}</div>
+                <div>${obj[key]}</div>
+              </div>`;
+          }
+        };
+
+        formatSection('system_info', systemInfo);
+        formatSection('memory_info', memoryInfo);
+
+        const diskEl = document.getElementById('disk_info');
+        diskEl.innerHTML = '<h2>Disk Info</h2>';
+        diskInfo.forEach(disk => {
+          diskEl.innerHTML += `<div class="section" style="margin-bottom:10px;">`;
+          for (let key in disk) {
+            diskEl.innerHTML += `
+              <div class="key-value">
+                <div class="key">${key}</div>
+                <div>${disk[key]}</div>
+              </div>`;
+          }
+          diskEl.innerHTML += `</div>`;
+        });
+
+        const coreEl = document.getElementById('core_usage');
+        coreEl.innerHTML = '';
+        coreUsage.forEach((percent, index) => {
+          coreEl.innerHTML += `
+            <div style="width: 100%;">
+              <div class="key">Core ${index}</div>
+              <div class="core-bar"><div class="bar-fill" style="width: ${percent}%;"></div></div>
+            </div>`;
+        });
+
+        document.getElementById('gpu_info').textContent = gpuInfo;
+        document.getElementById('cpu_temp').textContent = cpuTemp;
+
+      } catch (err) {
+        console.error("Error fetching system data:", err);
+      }
+    }
+
+    setInterval(fetchData, 1000); // Auto-update every second
+    fetchData(); // Initial load
+  </script>
+</body>
+</html>
